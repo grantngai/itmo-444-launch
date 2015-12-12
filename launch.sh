@@ -27,4 +27,4 @@ aws autoscaling create-auto-scaling-group --auto-scaling-group-name itmo444-exte
 
 mapfile -t dbinstanceARR < <(aws rds describe-db-instances --output json | grep "\"DBInstanceIdentifier" | sed "s/[\"\:\, ]//g" | sed "s/DBInstanceIdentifier//g")
 
-aws rds create-db-instance --db-name pngai-db --db-instance-identifier pngai --db-instance-class db.t1.micro --engine MySQL --master-username controller --master-user-password Pingvin5 --allocated-storage 5 --publicly-accessible
+aws rds create-db-instance --db-name pngaidb --db-instance-identifier pngai --db-instance-class db.t1.micro --engine MySQL --master-username controller --master-user-password Pingvin5 --allocated-storage 5 --publicly-accessible
