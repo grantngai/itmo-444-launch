@@ -9,3 +9,14 @@ echo ${instanceARR[@]}
 aws ec2 wait instance-running --instance-ids ${instanceARR[@]}
 
 ELBURL=(`aws elb create-load-balancer --load-balancer-name itmo444pngai-lb --listeners Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80 --security-groups $4 --subnets $5 --output=text`)
+echo $ELBURL
+
+echo -e "\nFinished launching ELB and sleeping 60 seconds"
+for i in {0..60}; do echo -ne '.'; sleep 1;done
+
+aws elb register-instances-with-load-balancer --load-balancer-name itmo444pngai-lb --instances ${instanceARR[@]}
+
+aws elb configure-health-check --load-balancer-name itmo444pngai-lb --health-check Target=HTTP:80/index.html,interval=30,UnhealthyThreshold=2,HealthyThreshold=2,Timeout=3
+
+echo -3 "\nWaiting an additional 60 seconds - before opening the ELB in a webbrowser"
+for i in {0..60}; do echo -ne '.'; sleep 1;done 
